@@ -1,0 +1,138 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-04-21T12:25:45.656Z",
+    "end": "2026-04-21T12:26:09.475Z",
+    "duration": 23819,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "49af9628-2cdd-4055-ac8c-2dd8557d0f6c",
+      "title": "",
+      "fullFile": "C:\\Users\\LENOVO\\Documents\\Digital Skola\\Web UI Automation9\\test\\test.sauce.js",
+      "file": "\\test\\test.sauce.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "197d98eb-1eee-4377-96ee-ba8283e43d5c",
+          "title": "Google Search Test",
+          "fullFile": "C:\\Users\\LENOVO\\Documents\\Digital Skola\\Web UI Automation9\\test\\test.sauce.js",
+          "file": "\\test\\test.sauce.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Visit SauceDemo dan cek page title",
+              "fullTitle": "Google Search Test Visit SauceDemo dan cek page title",
+              "timedOut": false,
+              "duration": 16075,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "driver = await new Builder().forBrowser('chrome').build();\nawait driver.get('https://www.saucedemo.com');\nlet inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'))\nlet inputPassword = await driver.findElement(By.xpath('//*[@data-test=\"password\"]'))\nlet buttonLogin = await driver.findElement(By.className('submit-button btn_action'))\nawait inputUsername.sendKeys('standard_user')\nawait inputPassword.sendKeys('secret_sauce')\nawait buttonLogin.click()\n// tunggu element tampil\nlet buttonCart = await driver.wait(\n    until.elementLocated(By.xpath('//*[@data-test=\"shopping-cart-link\"]')),\n    10000\n);\nawait driver.wait(until.elementIsVisible(buttonCart), 5000, 'Shopping cart harus tampil');\n//tunggu\nawait driver.sleep(1700)",
+              "err": {},
+              "uuid": "9549154f-1405-46a6-8939-f7cabc3a91c1",
+              "parentUUID": "197d98eb-1eee-4377-96ee-ba8283e43d5c",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Drop down",
+              "fullTitle": "Google Search Test Drop down",
+              "timedOut": false,
+              "duration": 2907,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// dropdown search\nlet dropdownSort = await driver.findElement(By.xpath('//select[@data-test=\"product-sort-container\"]'));\n//low to high\nawait dropdownSort.click();\nlet option1 = await driver.findElement(By.xpath('//option[text()=\"Price (low to high)\"]'));\nawait option1.click();\n//tunggu\nawait driver.sleep(1700)\n// ambil ulang element \nlet dropdownSort2 = await driver.findElement(By.xpath('//select[@data-test=\"product-sort-container\"]'));\nawait dropdownSort2.click();\n//A to Z\nawait dropdownSort2.click();\nlet option2 = await driver.findElement(By.xpath('//option[text()=\"Name (A to Z)\"]'));\nawait option2.click();\n//tunggu\nawait driver.sleep(600)",
+              "err": {},
+              "uuid": "3f2d6cde-f967-4704-9f6d-b52ba9184df7",
+              "parentUUID": "197d98eb-1eee-4377-96ee-ba8283e43d5c",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Add to cart and checkout",
+              "fullTitle": "Google Search Test Add to cart and checkout",
+              "timedOut": false,
+              "duration": 4608,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "//tambah backkpack bag\nlet addtochartbag = await driver.findElement(By.xpath('//button[@data-test=\"add-to-cart-sauce-labs-backpack\"]'))\nawait addtochartbag.click()\n//tunggu    \nawait driver.sleep(600)\n//cek keranjang\nlet cek = await driver.findElement(By.xpath('//*[@data-test=\"shopping-cart-link\"]'))\nawait cek.click()\n//tunggu\nawait driver.sleep(1700)\nawait driver.get('https://www.saucedemo.com/cart.html');\n\nawait driver.quit();",
+              "err": {},
+              "uuid": "fdcd24c3-5ccb-4e8c-b374-fb66dad67828",
+              "parentUUID": "197d98eb-1eee-4377-96ee-ba8283e43d5c",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "9549154f-1405-46a6-8939-f7cabc3a91c1",
+            "3f2d6cde-f967-4704-9f6d-b52ba9184df7",
+            "fdcd24c3-5ccb-4e8c-b374-fb66dad67828"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 23590,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 60000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "11.7.5"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.3.2"
+    }
+  }
+}

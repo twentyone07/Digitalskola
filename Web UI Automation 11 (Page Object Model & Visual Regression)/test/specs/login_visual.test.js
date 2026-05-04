@@ -1,10 +1,10 @@
 const { Builder, until } = require("selenium-webdriver");
-const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { compareScreenshot } = require("../../utilities/visual_regression.helper");
-const LoginPage = require("../pageobjects/login.page");
+const LoginAction = require("../actions/login.actions");
 
 let driver;
+let loginAction;
 
 // Hook: before semua test
 before(async () => {
@@ -23,10 +23,11 @@ describe("Login SauceDemo", () => {
     console.log("Membuka browser...");
     let options = new chrome.Options();
     options.addArguments("--headless");
-    driver = new Builder()
+    driver = await new Builder()
       .forBrowser("chrome")
       .setChromeOptions(options)
       .build();
+    loginAction = new LoginAction(driver); 
     await driver.get("https://www.saucedemo.com/");
   });
 
@@ -38,54 +39,42 @@ describe("Login SauceDemo", () => {
 
   // Skenario 1: Login berhasil
   it("Login with valid credential", async function () {
-    await driver.findElement(LoginPage.usernameInput).sendKeys("standard_user");
-    await driver.findElement(LoginPage.passwordInput).sendKeys("secret_sauce");
-    await driver.findElement(LoginPage.loginButton).click();
-    await driver.wait(until.elementLocated(LoginPage.pageTitle), 5000);
-    const title = await driver.findElement(LoginPage.pageTitle).getText();
-    assert.strictEqual(title, "Products");
+    await loginAction.login("standard_user", "secret_sauce");
+    await loginAction.assertLoginSuccess("Products");
     await driver.sleep(1000);
     await compareScreenshot(driver, "positive_product_page");
   });
 
   // Skenario 2: Login dengan username kosong
   it("Login with empty username", async function () {
-    await driver.findElement(LoginPage.passwordInput).sendKeys("secret_sauce");
-    await driver.findElement(LoginPage.loginButton).click();
-    const error = await driver.findElement(LoginPage.errorMessage).getText();
-    assert.ok(error.includes("Username is required"));
+    await loginAction.inputPassword("secret_sauce");
+    await loginAction.clickLoginButton();
+    await loginAction.assertLoginFailed("Username is required");
     await driver.sleep(1000);
     await compareScreenshot(driver, "negative_empty_username");
   });
 
   // Skenario 3: Login dengan password kosong
   it("Login with empty password", async function () {
-    await driver.findElement(LoginPage.usernameInput).sendKeys("standard_user");
-    await driver.findElement(LoginPage.loginButton).click();
-    const error = await driver.findElement(LoginPage.errorMessage).getText();
-    assert.ok(error.includes("Password is required"));
+    await loginAction.inputUsername("standard_user");
+    await loginAction.clickLoginButton();
+    await loginAction.assertLoginFailed("Password is required");
     await driver.sleep(1000);
     await compareScreenshot(driver, "negative_empty_password");
   });
 
   // Skenario 4: Login dengan password salah
   it("Login dengan password salah", async function () {
-    await driver.findElement(LoginPage.usernameInput).sendKeys("standard_user");
-    await driver.findElement(LoginPage.passwordInput).sendKeys("wrong_password");
-    await driver.findElement(LoginPage.loginButton).click();
-    const error = await driver.findElement(LoginPage.errorMessage).getText();
-    assert.ok(error.includes("Username and password do not match"));
+    await loginAction.login("standard_user", "wrong_password");
+    await loginAction.assertLoginFailed("Username and password do not match");
     await driver.sleep(1000);
     await compareScreenshot(driver, "negative_wrong_password");
   });
 
   // Skenario 5: Login dengan akun terkunci
   it("Login dengan akun locked_out_user", async function () {
-    await driver.findElement(LoginPage.usernameInput).sendKeys("locked_out_user");
-    await driver.findElement(LoginPage.passwordInput).sendKeys("secret_sauce");
-    await driver.findElement(LoginPage.loginButton).click();
-    const error = await driver.findElement(LoginPage.errorMessage).getText();
-    assert.ok(error.includes("Sorry, this user has been locked out"));
+    await loginAction.login("locked_out_user", "secret_sauce");
+    await loginAction.assertLoginFailed("Sorry, this user has been locked out");
     await driver.sleep(1000);
     await compareScreenshot(driver, "negative_locked_out_user");
   });
